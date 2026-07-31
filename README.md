@@ -1,252 +1,276 @@
- DevOps Monitoring Project
+#  DevOps Monitoring Project
 
- Project Overview
-
-This project demonstrates a complete containerized monitoring solution using Prometheus, Grafana, Node Exporter, cAdvisor, and a sample Docker application.
-
-The goal of this project is to monitor:
-
-- Docker containers
-- Linux host system metrics
-- Application availability
-- Resource usage (CPU, Memory, Disk, Network)
-- Alerts for service failures
-
-Everything is orchestrated using Docker Compose, making deployment simple and reproducible.
+A complete containerized monitoring and logging stack built using Docker Compose. This project demonstrates how to monitor applications and infrastructure using Prometheus, Grafana, cAdvisor, Loki, and Promtail.
 
 ---
 
- Architecture
+#  Project Overview
 
-                +---------------------+
-                |  Monitoring App     |
-                +----------+----------+
-                           |
-                           |
-                +----------v----------+
-                |      cAdvisor       |
-                +----------+----------+
-                           |
-                           |
-Linux Host ----> Node Exporter
-                           |
-                           |
-                +----------v----------+
-                |     Prometheus      |
-                +----------+----------+
-                           |
-                           |
-                +----------v----------+
-                |      Grafana        |
-                +---------------------+
+This project monitors a Dockerized application by collecting:
+
+-  Metrics using Prometheus
+-  Dashboards using Grafana
+-  Container metrics using cAdvisor
+-  Centralized logs using Loki
+-  Log collection using Promtail
 
 ---
 
- Tech Stack
+# Architecture
+
+```
+                 +----------------------+
+                 |  Monitoring App      |
+                 +----------+-----------+
+                            |
+                Metrics & Logs
+                            |
+        +-------------------+-------------------+
+        |                                       |
++-------v--------+                    +---------v---------+
+|   Prometheus   |                    |    Promtail       |
++-------+--------+                    +---------+---------+
+        |                                       |
+        |                            Docker Container Logs
+        |                                       |
++-------v--------+                    +---------v---------+
+|    Grafana     | <----------------> |       Loki        |
++----------------+                    +-------------------+
+
+                ^
+                |
+         +------+------+
+         |  cAdvisor   |
+         +-------------+
+```
+
+---
+
+# Tech Stack
 
 - Docker
 - Docker Compose
 - Prometheus
 - Grafana
-- Node Exporter
+- Loki
+- Promtail
 - cAdvisor
-- YAML
 
 ---
 
- Project Structure
+#  Project Structure
 
+```
 devops-monitoring-project/
 │
-├── docker-compose.yml
-├── README.md
-│
 ├── app/
-│
 ├── prometheus/
-│   ├── prometheus.yml
-│   └── alert.rules.yml
-│
-├── grafana/
-│
+│   └── prometheus.yml
+├── promtail/
+│   └── promtail-config.yml
+├── screenshots/
 ├── docs/
-│
-└── screenshots/
+├── docker-compose.yml
+└── README.md
+```
 
 ---
 
- Services Used
+#  Services
 
-Prometheus
-
-- Metrics collection
-- Stores time-series data
-- Scrapes metrics from exporters
-
-Port:
-
-9090
-
----
-
-Grafana
-
-- Dashboard visualization
-- Alert management
-- Prometheus datasource
-
-Port:
-
-3000
+| Service | Port | Purpose |
+|---------|------|---------|
+| Monitoring App | 5000 | Sample application |
+| Prometheus | 9090 | Metrics collection |
+| Grafana | 3000 | Visualization |
+| cAdvisor | 8081 | Docker container metrics |
+| Loki | 3100 | Log aggregation |
+| Promtail | 9080 | Log collection |
 
 ---
 
-Node Exporter
+#  Features
 
-Monitors Linux host metrics
+- Dockerized monitoring stack
+- Application metrics monitoring
+- Container monitoring
+- Custom Grafana dashboards
+- Centralized log aggregation
+- Alerting using Grafana
+- Docker Compose deployment
 
-Includes:
+---
+
+#  Dashboards
+
+### Metrics Dashboard
 
 - CPU Usage
 - Memory Usage
-- Disk Usage
-- Filesystem
-- Network
-- Load Average
-
-Port:
-
-9100
-
----
-
-cAdvisor
-
-Monitors Docker containers
-
-Includes:
-
-- Container CPU
-- Container Memory
-- Network I/O
-- Filesystem usage
-
-Port:
-
-8081
-
----
-
-Sample Monitoring App
-
-A Dockerized application used to demonstrate monitoring and alerting.
-
----
-
- Grafana Dashboards
-
-Implemented panels include:
-
-- CPU Usage
-- Memory Usage
-- Disk Usage
-- Network Traffic
+- Request Count
+- Response Time
 - Application Uptime
 - Container Metrics
 
+### Logs Dashboard
+
+- Live Docker Logs
+- Error Logs
+- Warning Logs
+- HTTP Request Logs
+- Log Rate
+
 ---
 
- Alerts Configured
+#  Alerting
 
-Prometheus alert rules include:
+Configured alerts include:
 
-- Prometheus Down
+- High CPU Usage
+- High Memory Usage
 - Application Down
-- Node Exporter Down
-- cAdvisor Down
-
-Grafana notification system is connected to Prometheus alert rules.
+- Prometheus Target Down
 
 ---
 
- Screenshots
+#  Logging
 
-Include screenshots of:
+Logging pipeline:
 
-- Grafana Dashboard
-- Prometheus Targets
-- Alert Rules
-- Docker Containers
-- Docker Compose Running
+Docker Containers
+
+⬇
+
+Promtail
+
+⬇
+
+Loki
+
+⬇
+
+Grafana Explore
 
 ---
 
- Getting Started
+# ▶ Run the Project
 
-Clone repository
+Clone the repository:
 
+```bash
 git clone https://github.com/Sriram-0549/Devops-monitoring-project.git
+```
 
-Move into project
+Go into the project:
 
+```bash
 cd Devops-monitoring-project
+```
 
-Start services
+Start services:
 
+```bash
 docker compose up -d
+```
 
-Access
+Check running containers:
 
-Prometheus
+```bash
+docker ps
+```
 
-http://localhost:9090
+---
+
+#  Access
 
 Grafana
 
+```
 http://localhost:3000
+```
+
+Prometheus
+
+```
+http://localhost:9090
+```
 
 cAdvisor
 
+```
 http://localhost:8081
+```
 
-Node Exporter
+Monitoring App
 
-http://localhost:9100/metrics
+```
+http://localhost:5000
+```
 
 ---
 
- Skills Demonstrated
+#  Screenshots
 
+## Metrics Dashboard
+
+(Add Screenshot)
+
+---
+
+## Logs Dashboard
+
+(Add Screenshot)
+
+---
+
+## Prometheus Targets
+
+(Add Screenshot)
+
+---
+
+## Alert Rules
+
+(Add Screenshot)
+
+---
+
+## Docker Containers
+
+(Add Screenshot)
+
+---
+
+#  Skills Demonstrated
+
+- Docker
 - Docker Compose
-- Container Monitoring
-- Linux Monitoring
-- Grafana Dashboards
-- Prometheus Configuration
-- Alert Rules
-- YAML Configuration
-- DevOps Monitoring Best Practices
+- Monitoring
+- Logging
+- Prometheus
+- Grafana
+- Loki
+- Promtail
+- cAdvisor
+- Alerting
+- Git & GitHub
 
 ---
 
- Future Improvements
+#  Learning Outcomes
 
-- Kubernetes Monitoring
-- Alertmanager Integration
-- Email Notifications
-- Slack Notifications
-- Loki Log Monitoring
-- Prometheus Service Discovery
-- Production Deployment
-- Terraform Infrastructure
-- CI/CD Pipeline Integration
+- Built a complete monitoring stack
+- Collected application and container metrics
+- Created production-style Grafana dashboards
+- Implemented centralized logging
+- Configured monitoring alerts
+- Managed the entire project using Docker Compose
 
 ---
 
- Author
+# 💻 Author
 
-Sriram
-
-BCA Graduate | DevOps & Cloud Enthusiast
+**Sriram**
 
 GitHub:
 https://github.com/Sriram-0549
